@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+            <div class="card-body p-4 p-md-5">
+                <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Novo produto</h3>
+                <form id="novoProduto" action="/novo_produto" method="POST" novalidate>
+                <div class="form-row">
+                    <div class="col-md-6 mb-4">
+                    <div class="form-outline">
+                        <label class="form-label" for="name">Nome</label>
+                        <input type="text" id="name" name="name" class="form-control form-control-lg" />
+                    </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+
+                    <div class="form-outline">
+                        <label class="form-label" for="price">Preço</label>
+                        <input type="text" id="price" name="price" class="form-control form-control-lg" style="width: 10rem" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                    <label class="form-label select-label">Categoria</label>
+                    <br>
+                    <select id="categoria" name="categoria" class="select form-control-lg" style="font-size: 1rem">
+                        <option value="1" disabled>Categoria</option>
+                        <option value="agasalho">Agasalho</option>
+                        <option value="bermuda">Bermuda</option>
+                        <option value="calca">Calça</option>
+                        <option value="camisa">Camisa</option>
+                        <option value="meias">Meias</option>
+                        <option value="roupa_intima">Roupa íntima</option>
+                    </select>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-2">
+                    <input class="btn btn-primary btn-lg" type="submit" value="Salvar" />
+                </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    $(document).ready(function () {
+      $('#data').DataTable({
+        ajax: '/api/data',
+        columns: [
+          {data: 'codigo'},
+          {data: 'nome'},
+          {data: 'preco'},
+        ],
+      });
+    });
+  </script>
+{% endblock %}
