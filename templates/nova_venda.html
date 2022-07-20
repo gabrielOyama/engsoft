@@ -64,8 +64,19 @@
                         <div>
                             <textarea rows="5" style="width: 25rem;"></textarea>
                         </div>
+                    </div>
+                    <div class="form-row" style="padding: 5px;">
+                        <div class="col-3">
+                            <label class="form-label" for="name">Valor total</label>
+                            <br>
+                            <select class="select form-control-lg" id='Produto' style="font-size: 1rem">
+                                {% for i, row in df.iterrows() %}
+                                <option value={{row['name']}}>{{row['name']}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                         <div style="margin: auto;">
-                            <input style="vertical-align: middle; font-size: 16px; height: 4em; width: 9rem" class="btn btn-primary btn-lg" type="submit"
+                            <input style="vertical-align: middle; font-size: 16px; height: 4em; width: 9rem " class="btn btn-primary btn-lg" type="submit"
                                 value="Salvar" />
                         </div>
                     </div>
