@@ -24,6 +24,18 @@ class User(db.Model):
             'email': self.email
         }
 
+class Produto(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), index=True)
+    preco = db.Column(db.Float, index=True)
+    categoria = db.Column(db.String(256))
+
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'preco': self.preco,
+            'categoria': self.categoria
+        }
 db.create_all()
 
 
@@ -52,6 +64,9 @@ def novo_produto():
 def data():
     return {'data': [user.to_dict() for user in User.query]}
 
+@app.route('/api/produto')
+def produto():
+    return {'data': [produto.to_dict() for produto in Produto.query]}
 
 if __name__ == '__main__':
     app.run()

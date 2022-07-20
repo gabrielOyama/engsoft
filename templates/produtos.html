@@ -80,12 +80,12 @@
 </div>
 
 
-  <table id="data" class="table table-striped">
+  <table id="produtos" class="table table-striped">
     <thead>
       <tr>
-        <th>Código</th>
         <th>Nome</th>
         <th>Preço</th>
+        <th>Categoria</th>
       </tr>
     </thead>
     <tbody>
@@ -96,12 +96,12 @@
 {% block scripts %}
   <script>
     $(document).ready(function () {
-      $('#data').DataTable({
-        ajax: '/api/data',
+      $('#produtos').DataTable({
+        ajax: '/api/produto',
         columns: [
-          {data: 'codigo'},
-          {data: 'nome'},
+          {data: 'name'},
           {data: 'preco'},
+          {data: 'categoria'},
         ],
       });
     });

@@ -1,7 +1,7 @@
 import random
 import sys
 from faker import Faker
-from bootstrap_table import db, User
+from ajax_table import db, User, Produto
 
 
 def create_fake_users(n):
@@ -18,6 +18,16 @@ def create_fake_users(n):
     print(f'Added {n} fake users to the database.')
 
 
-if __name__ == '__main__':
+def create_produto():
+    """Generate fake users."""
 
-    create_fake_users(10)
+    produto = Produto(name='dasdsa',
+                preco=25,
+                categoria= 'agasalho')
+
+    db.session.add(produto)
+    db.session.commit()
+    print(f'Added produto to the database.')
+
+if __name__ == '__main__':
+    create_produto()
