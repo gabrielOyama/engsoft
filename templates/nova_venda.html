@@ -29,7 +29,7 @@
                             <br>
                             <select class="select form-control-lg" name="vendedor" id='vendedor'
                                 style="font-size: 1rem; width: 25rem">
-                                {% for i, row in df_produto.iterrows() %}
+                                {% for i, row in df_vendedor.iterrows() %}
                                 <option value={{row['name']}}>{{row['name']}}</option>
                                 {% endfor %}
                             </select>

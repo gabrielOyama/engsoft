@@ -5,6 +5,7 @@ $(document).ready(function () {
               {data: 'name'},
               {data: 'preco'},
               {data: 'categoria'},
+              {data: 'aVenda'}
             ],
             buttons: [
             {

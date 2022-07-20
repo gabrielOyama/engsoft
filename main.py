@@ -31,12 +31,13 @@ class Produto(db.Model):
     name = db.Column(db.String(64), index=True)
     preco = db.Column(db.Float, index=True)
     categoria = db.Column(db.String(256))
-
+    aVenda = db.Column(db.Boolean, index=True)
     def to_dict(self):
         return {
             'name': self.name,
             'preco': self.preco,
-            'categoria': self.categoria
+            'categoria': self.categoria,
+            'aVenda': self.aVenda
         }
 
 class Cliente(db.Model):
@@ -86,6 +87,7 @@ def clientes():
 def vendedores():
     return render_template('vendedores.html', title='Cadastro venda')
 
+
 @app.route('/nova_venda', methods=['GET', 'POST'])
 def nova_venda():
     if request.method == 'POST':
@@ -115,13 +117,14 @@ def nova_venda():
 
         df_produto = pd.DataFrame(columns=['name', 'preco', 'categoria', 'nomeP'])
         for produto in Produto.query:
-            categoria = produto.categoria
-            name = produto.name
-            preco = produto.preco
-            nomeP = produto.name + '_' + str(produto.preco)
-            newrow = {'categoria': categoria, 'name': name, 'preco': preco, 'nomeP': nomeP}
-            df_produto = df_produto.append(newrow, ignore_index=True)
-        return render_template('nova_venda.html', title='Cadastro venda', df_cliente=df_cliente, df_produto= df_produto)
+            if produto.aVenda:
+                categoria = produto.categoria
+                name = produto.name
+                preco = produto.preco
+                nomeP = produto.name + '_' + str(produto.preco)
+                newrow = {'categoria': categoria, 'name': name, 'preco': preco, 'nomeP': nomeP}
+                df_produto = df_produto.append(newrow, ignore_index=True)
+        return render_template('nova_venda.html', title='Cadastro venda', df_cliente=df_cliente, df_produto= df_produto, df_vendedor=df_vendedor)
 
 @app.route('/novo_produto', methods=['GET', 'POST'])
 def novo_produto():
@@ -129,7 +132,8 @@ def novo_produto():
         data = request.form.to_dict()
         produto = Produto(name=data['name'],
                           preco=data['price'].replace(',','.'),
-                          categoria=data['categoria'])
+                          categoria=data['categoria'],
+                          aVenda= True)
         db.session.add(produto)
         db.session.commit()
     return render_template('novo_produto.html', title='Cadastro venda')
@@ -162,6 +166,31 @@ def novo_vendedor():
         db.session.commit()
     return render_template('novo_vendedor.html', title='Cadastro vendedor')
 
+@app.route('/update_vendedor', methods=['GET', 'POST'])
+def update_vendedor():
+    # pdb.set_trace()
+    if request.method == 'POST':
+        data = request.form.to_dict()
+
+        db.session.query(Vendedor).filter(Vendedor.cpf == data['cpf']).update({'isActive': data['isActive'] == 'true'})
+        db.session.commit()
+
+
+    return render_template('update_vendedor.html', title='Cadastro vendedor')
+
+@app.route('/update_produto', methods=['GET', 'POST'])
+def update_produto():
+    # pdb.set_trace()
+    if request.method == 'POST':
+        data = request.form.to_dict()
+
+        db.session.query(Produto).filter(Produto.name == data['name']).update({'aVenda': data['aVenda'] == 'true'})
+        if len(data['price']) > 0:
+            db.session.query(Produto).filter(Produto.name == data['name']).update({'preco': data['price']})
+        db.session.commit()
+
+
+    return render_template('update_produto.html', title='Cadastro vendedor')
 
 @app.route('/api/data')
 def data():
