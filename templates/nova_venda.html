@@ -12,7 +12,7 @@
                         <div class="col-3">
                             <label class="form-label" for="Cliente">Cliente</label>
                             <br>
-                            <select class="select form-control-lg" id='Cliente' style="font-size: 1rem; width: 25rem">
+                            <select name="cliente" class="select form-control-lg" id='Cliente' style="font-size: 1rem; width: 25rem">
                                 {% for i, row in df_cliente.iterrows() %}
                                 <option value={{row['name']}}>{{row['name']}}</option>
                                 {% endfor %}
@@ -65,11 +65,11 @@
                     </div>
                     <div class="form-row" style="padding: 5px;">
                         <div>
-                            <textarea rows="5" id="compras" style="width: 25rem;"></textarea>
+                            <textarea name="compras" rows="5" id="compras" style="width: 25rem;"></textarea>
                         </div>
                         <div style="margin: auto;">
                             <label class="form-label" for="final">Valor final:</label>
-                            <input id="final" value="0" type="text">
+                            <input name="valorFinal" id="final" value="0" type="text">
                             <input style="vertical-align: middle; font-size: 16px; height: 4em; width: 9rem" class="btn btn-primary btn-lg" type="submit"
                                 value="Salvar" />
                         </div>
