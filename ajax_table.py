@@ -1,3 +1,4 @@
+import pandas as pd
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 
@@ -49,11 +50,19 @@ def vendas():
 
 @app.route('/produtos')
 def produtos():
-    return render_template('produtos.html', title='Cadastro venda')
+    teste = ['oioioioioioioioi', '231321', '323']
+    return render_template('produtos.html', title='Cadastro venda', teste=teste)
 
 @app.route('/nova_venda')
 def nova_venda():
-    return render_template('nova_venda.html', title='Cadastro venda')
+    df = pd.DataFrame(columns=['name', 'preco', 'categoria'])
+    for produto in Produto.query:
+        categoria = produto.categoria
+        name = produto.name
+        preco = produto.preco
+        newrow = {'categoria': categoria, 'name': name, 'preco': preco}
+        df = df.append(newrow, ignore_index=True)
+    return render_template('nova_venda.html', title='Cadastro venda', df=df)
 
 @app.route('/novo_produto')
 def novo_produto():
