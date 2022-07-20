@@ -31,6 +31,22 @@ db.create_all()
 def index():
     return render_template('ajax_table.html', title='Ajax Table')
 
+@app.route('/vendas')
+def vendas():
+    return render_template('vendas.html', title='Cadastro venda')
+
+@app.route('/produtos')
+def produtos():
+    return render_template('vendas.html', title='Cadastro venda')
+
+@app.route('/nova_venda')
+def nova_venda():
+    return render_template('vendas.html', title='Cadastro venda')
+
+@app.route('/novo_produto')
+def novo_produto():
+    return render_template('vendas.html', title='Cadastro venda')
+
 
 @app.route('/api/data')
 def data():
