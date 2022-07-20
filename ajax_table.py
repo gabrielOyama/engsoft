@@ -53,7 +53,7 @@ def produtos():
 
 @app.route('/nova_venda')
 def nova_venda():
-    return render_template('vendas.html', title='Cadastro venda')
+    return render_template('nova_venda.html', title='Cadastro venda')
 
 @app.route('/novo_produto')
 def novo_produto():
