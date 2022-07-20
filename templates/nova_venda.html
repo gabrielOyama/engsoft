@@ -7,57 +7,68 @@
         <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
             <div class="card-body p-4 p-md-5">
                 <form>
-                <div class="form-row">
-                    <div class="col-2">
-                <h5 class="mb-4 pb-2 pb-md-0 mb-md-5">Nova venda                      </h5>
-                    </div>
-                        <div class="col-4">
-                        <label class="form-label" for="Cliente">Cliente</label>
-                        <select class="select form-control-lg" id='Cliente' style="font-size: 1rem">
-                         {% for i, row in df.iterrows() %}
-                            <option value={{row['name']}}>{{row['name']}}</option>
-                         {% endfor %}
-                        </select>
-                    </div>
-                    <div class="col-6">
-                        <label class="form-label" for="Vendedor">Vendedor</label>
-                        <select class="select form-control-lg" name="Vendedor" id='Vendedor' style="font-size: 1rem">
-                         {% for i, row in df.iterrows() %}
-                            <option value={{row['name']}}>{{row['name']}}</option>
-                         {% endfor %}
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-
-                </div>
-                <div class="form-row">
-                    <div class="col-3">
-                        <label class="form-label" for="name">Produtos</label>
-                        <br>
-                        <select class="select form-control-lg" id='Produto' style="font-size: 1rem">
-                         {% for i, row in df.iterrows() %}
-                            <option value={{row['name']}}>{{row['name']}}</option>
-                         {% endfor %}
-                        </select>
-                    </div>
-                    <div class="col-6">
-                        <label class="form-label" for="name">Quantidade</label>
-                        <input type="text" id="name" class="form-control form-control-lg" />
-                    </div>
-                    <div class="col-9">
-                        <button onclick="addProduto()"></button>
-                    </div>
-                </div>
-                    <br><br>
-                <div class="form-row">
-                    <div class="col-5">
-                        <textarea rows="5"></textarea>
-                    </div>
-                    <div class="col-7" style="vertical-align: middle">
-                    <input style="vertical-align: middle" class="btn btn-primary btn-lg" type="submit" value="Salvar" />
+                    <h5 style="padding: 5px; font-size: 2rem">Nova venda</h5>
+                    <div class="form-row" style="padding: 5px;">
+                        <div class="col-3">
+                            <label class="form-label" for="Cliente">Cliente</label>
+                            <br>
+                            <select class="select form-control-lg" id='Cliente' style="font-size: 1rem; width: 25rem">
+                                {% for i, row in df.iterrows() %}
+                                <option value={{row['name']}}>{{row['name']}}</option>
+                                {% endfor %}
+                            </select>
                         </div>
-                </div>
+                    </div>
+                    <div class="form-row" style="padding: 5px;">
+                        <div class="col-8">
+                            <label class="form-label" for="Vendedor">Vendedor</label>
+                            <br>
+                            <select class="select form-control-lg" name="Vendedor" id='Vendedor'
+                                style="font-size: 1rem; width: 25rem">
+                                {% for i, row in df.iterrows() %}
+                                <option value={{row['name']}}>{{row['name']}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row" style="padding: 5px;">
+                        <div class="col-3">
+                            <label class="form-label" for="name">Produtos</label>
+                            <br>
+                            <select class="select form-control-lg" id='Produto' style="font-size: 1rem">
+                                {% for i, row in df.iterrows() %}
+                                <option value={{row['name']}}>{{row['name']}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label" for="name">Quantidade</label>
+                            <input type="text" id="name" class="form-control form-control-lg" />
+                        </div>
+                    </div>
+                    <div class="form-row" style="padding: 5px;">
+                        <div class="col-9">
+                            <button onclick="addProduto()" style="
+                        background-color: #4CAF50; /* Green */
+                        border: none;
+                        color: white;
+                        padding: 15px 32px;
+                        text-align: center;
+                        text-decoration: none;
+                        display: inline-block;
+                        font-size: 16px;">Adicionar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-row" style="padding: 5px;">
+                        <div>
+                            <textarea rows="5" style="width: 25rem;"></textarea>
+                        </div>
+                        <div style="margin: auto;">
+                            <input style="vertical-align: middle; font-size: 16px; height: 4em; width: 9rem" class="btn btn-primary btn-lg" type="submit"
+                                value="Salvar" />
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -66,16 +77,16 @@
 {% endblock %}
 
 {% block scripts %}
-  <script>
+<script>
     $(document).ready(function () {
-      $('#data').DataTable({
-        ajax: '/api/data',
-        columns: [
-          {data: 'codigo'},
-          {data: 'nome'},
-          {data: 'preco'},
-        ],
-      });
+        $('#data').DataTable({
+            ajax: '/api/data',
+            columns: [
+                { data: 'codigo' },
+                { data: 'nome' },
+                { data: 'preco' },
+            ],
+        });
     });
-  </script>
+</script>
 {% endblock %}
