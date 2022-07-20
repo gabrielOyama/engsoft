@@ -175,7 +175,6 @@ def update_vendedor():
         db.session.query(Vendedor).filter(Vendedor.cpf == data['cpf']).update({'isActive': data['isActive'] == 'true'})
         db.session.commit()
 
-
     return render_template('update_vendedor.html', title='Cadastro vendedor')
 
 @app.route('/update_produto', methods=['GET', 'POST'])
@@ -189,8 +188,17 @@ def update_produto():
             db.session.query(Produto).filter(Produto.name == data['name']).update({'preco': data['price']})
         db.session.commit()
 
+    df_produto = pd.DataFrame(columns=['name', 'preco', 'categoria', 'nomeP'])
+    for produto in Produto.query:
+        if produto.aVenda:
+            categoria = produto.categoria
+            name = produto.name
+            preco = produto.preco
+            nomeP = produto.name.replace(' ', '_') + '_' + str(produto.preco)
+            newrow = {'categoria': categoria, 'name': name, 'preco': preco, 'nomeP': nomeP}
+            df_produto = df_produto.append(newrow, ignore_index=True)
 
-    return render_template('update_produto.html', title='Cadastro vendedor')
+    return render_template('update_produto.html', title='Cadastro vendedor', df_produto=df_produto)
 
 @app.route('/api/data')
 def data():

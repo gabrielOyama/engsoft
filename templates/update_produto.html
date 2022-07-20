@@ -12,7 +12,11 @@
             <div class="col-md-6 mb-4">
               <div class="form-outline">
                 <label class="form-label" for="name">Nome</label>
-                <input type="text" id="name" name="name" class="form-control form-control-lg" />
+                <select class="select form-control-lg" name="name" id='name' style="font-size: 1rem">
+                                {% for i, row in df_produto.iterrows() %}
+                                <option value={{row['name']}}>{{row['name']}}</option>
+                                {% endfor %}
+                            </select>
               </div>
             </div>
             <div class="col-md-6 mb-4">
