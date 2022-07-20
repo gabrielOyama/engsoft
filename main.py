@@ -1,6 +1,7 @@
 import pandas as pd
 from flask import Flask, render_template,request
 from flask_sqlalchemy import SQLAlchemy
+import pdb
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
@@ -37,6 +38,18 @@ class Produto(db.Model):
             'preco': self.preco,
             'categoria': self.categoria
         }
+
+class Cliente(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), index=True)
+    cpf = db.Column(db.Integer, index=True)
+
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'cpf': self.cpf
+        }
+
 db.create_all()
 
 
@@ -46,11 +59,15 @@ def index():
 
 @app.route('/vendas')
 def vendas():
-    return render_template('vendas.html', title='Cadastro venda')
+    return render_template('vendas.html', title='Lista de vendas')
 
 @app.route('/produtos')
 def produtos():
-    return render_template('produtos.html', title='Cadastro venda')
+    return render_template('produtos.html', title='Lista de produtos')
+
+@app.route('/clientes')
+def clientes():
+    return render_template('clientes.html', title='Lista de clientes')
 
 @app.route('/nova_venda')
 def nova_venda():
@@ -74,6 +91,19 @@ def novo_produto():
         db.session.commit()
     return render_template('novo_produto.html', title='Cadastro venda')
 
+@app.route('/novo_cliente', methods=['GET', 'POST'])
+def novo_cliente():
+    # pdb.set_trace()
+    if request.method == 'POST':
+        data = request.form.to_dict()
+
+        cliente = Cliente(name=data['name'],
+                          cpf=data['cpf'])
+
+        db.session.add(cliente)
+        db.session.commit()
+    return render_template('novo_cliente.html', title='Cadastro cliente')
+
 
 @app.route('/api/data')
 def data():
@@ -82,6 +112,10 @@ def data():
 @app.route('/api/produto')
 def produto():
     return {'data': [produto.to_dict() for produto in Produto.query]}
+
+@app.route('/api/cliente')
+def cliente():
+    return {'data': [cliente.to_dict() for cliente in Cliente.query]}
 
 if __name__ == '__main__':
     app.run()

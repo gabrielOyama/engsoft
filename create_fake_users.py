@@ -1,7 +1,8 @@
 import random
 import sys
 from faker import Faker
-from main import db, User, Produto
+from main import db, User, Produto, Cliente
+import pdb
 
 
 def create_fake_users(n):
@@ -19,7 +20,7 @@ def create_fake_users(n):
 
 
 def create_produto():
-    """Generate fake users."""
+    """Generate fake products."""
 
     produto = Produto(name='dasdsa',
                 preco=25,
@@ -29,5 +30,16 @@ def create_produto():
     db.session.commit()
     print(f'Added produto to the database.')
 
+def create_cliente():
+    """Generate fake customers."""
+
+    cliente = Cliente(name='Luis',
+                cpf=88855532101)
+
+    db.session.add(cliente)
+    db.session.commit()
+    print(f'Added customer to database.')
+
 if __name__ == '__main__':
     create_produto()
+    create_cliente()
