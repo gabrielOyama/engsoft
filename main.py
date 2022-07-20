@@ -50,6 +50,21 @@ class Cliente(db.Model):
             'cpf': self.cpf
         }
 
+class Vendedor(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), index=True)
+    cpf = db.Column(db.Integer, index=True)
+    email = db.Column(db.String(64), index=True)
+    isActive = db.Column(db.Boolean, index=True)
+
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'cpf': self.cpf,
+            'email': self.email,
+            'isActive': self.isActive
+        }
+
 db.create_all()
 
 
@@ -68,6 +83,10 @@ def produtos():
 @app.route('/clientes')
 def clientes():
     return render_template('clientes.html', title='Lista de clientes')
+
+@app.route('/vendedores')
+def vendedores():
+    return render_template('vendedores.html', title='Lista de vendedores')
 
 @app.route('/nova_venda')
 def nova_venda():
@@ -104,6 +123,21 @@ def novo_cliente():
         db.session.commit()
     return render_template('novo_cliente.html', title='Cadastro cliente')
 
+@app.route('/novo_vendedor', methods=['GET', 'POST'])
+def novo_vendedor():
+    # pdb.set_trace()
+    if request.method == 'POST':
+        data = request.form.to_dict()
+
+        vendedor = Vendedor(name=data['name'],
+                          cpf=data['cpf'],
+                          email=data['email'],
+                          isActive= data['isActive'] == 'true')
+
+        db.session.add(vendedor)
+        db.session.commit()
+    return render_template('novo_vendedor.html', title='Cadastro vendedor')
+
 
 @app.route('/api/data')
 def data():
@@ -116,6 +150,10 @@ def produto():
 @app.route('/api/cliente')
 def cliente():
     return {'data': [cliente.to_dict() for cliente in Cliente.query]}
+
+@app.route('/api/vendedor')
+def vendedor():
+    return {'data': [vendedor.to_dict() for vendedor in Vendedor.query]}
 
 if __name__ == '__main__':
     app.run()
