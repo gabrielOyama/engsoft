@@ -16,16 +16,6 @@ $(document).ready(function () {
             });
 
 
-    table.MakeCellsEditable({
-    "onUpdate": myCallbackFunction,
-    "confirmationButton": {"cancelCss ": "button"},
-    "columns": [0,1,2],
-    "inputType":[
-    {
-    "column": 1,
-    "type": "text"
-    }]
-    });
 });
 
 function addProduto()
@@ -37,12 +27,3 @@ soma = parseFloat(document.getElementById("final").value) + preco * parseFloat(q
 document.getElementById("compras").value += produto.split("_")[0] + ',  R$' + preco + '  ' + quantidade +  ' unidades \r\n'
 document.getElementById("final").value = soma
 }
-
-
-
-
-
-function myCallbackFunction (updatedCell, updatedRow, oldValue) {
-        console.log("The new value for the cell is: " + updatedCell.data());
-        console.log("The values for each cell in that row are: " + updatedRow.data());
-    }

@@ -121,7 +121,7 @@ def nova_venda():
                 categoria = produto.categoria
                 name = produto.name
                 preco = produto.preco
-                nomeP = produto.name + '_' + str(produto.preco)
+                nomeP = produto.name.replace(' ', '_') + '_' + str(produto.preco)
                 newrow = {'categoria': categoria, 'name': name, 'preco': preco, 'nomeP': nomeP}
                 df_produto = df_produto.append(newrow, ignore_index=True)
         return render_template('nova_venda.html', title='Cadastro venda', df_cliente=df_cliente, df_produto= df_produto, df_vendedor=df_vendedor)
