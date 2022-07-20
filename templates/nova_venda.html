@@ -24,6 +24,7 @@
                     </div>
                     <div class="form-outline">
                         <label class="form-label" for="name">Produtos</label>
+                        <br>
                         <select class="select form-control-lg" id='Produto' style="font-size: 1rem">
                          {% for i, row in df.iterrows() %}
                             <option value={{row['name']}}>{{row['name']}}</option>
