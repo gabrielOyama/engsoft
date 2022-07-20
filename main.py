@@ -1,7 +1,7 @@
 import pandas as pd
 from flask import Flask, render_template,request
 from flask_sqlalchemy import SQLAlchemy
-import pdb
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
@@ -9,21 +9,21 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), index=True)
-    age = db.Column(db.Integer, index=True)
-    address = db.Column(db.String(256))
-    phone = db.Column(db.String(20))
-    email = db.Column(db.String(120))
+class Venda(db.Model):
+    id_venda = db.Column(db.Integer, primary_key=True)
+    cliente = db.Column(db.String(100), index=True)
+    vendedor = db.Column(db.String(100), index=True)
+    data = db.Column(db.DateTime)
+    valor = db.Column(db.Float)
+    produtos = db.Column(db.String(500))
 
     def to_dict(self):
         return {
-            'name': self.name,
-            'age': self.age,
-            'address': self.address,
-            'phone': self.phone,
-            'email': self.email
+            'cliente': self.cliente,
+            'vendedor': self.vendedor,
+            'data': self.data,
+            'valor': self.valor,
+            'produtos': self.produtos
         }
 
 class Produto(db.Model):
@@ -90,7 +90,15 @@ def vendedores():
 def nova_venda():
     if request.method == 'POST':
         data = request.form.to_dict()
-        print(data)
+
+        venda = Venda(cliente=data['cliente'],
+                      vendedor=data['vendedor'],
+                      produtos=data['compras'],
+                      valor=data['valorFinal'],
+                      data=datetime.today())
+        db.session.add(venda)
+        ok = db.session.commit()
+        return render_template('vendas.html', title='Lista de vendas')
     else:
         df_cliente = pd.DataFrame(columns=['name'])
         for cliente in Cliente.query:
@@ -98,6 +106,12 @@ def nova_venda():
             newrow = {'name': name}
             df_cliente = df_cliente.append(newrow, ignore_index=True)
 
+        df_vendedor = pd.DataFrame(columns=['name'])
+        for vendedor in Vendedor.query:
+            if vendedor.isActive:
+                name = vendedor.name
+                newrow = {'name': name}
+                df_vendedor = df_vendedor.append(newrow, ignore_index=True)
 
         df_produto = pd.DataFrame(columns=['name', 'preco', 'categoria', 'nomeP'])
         for produto in Produto.query:
@@ -107,14 +121,14 @@ def nova_venda():
             nomeP = produto.name + '_' + str(produto.preco)
             newrow = {'categoria': categoria, 'name': name, 'preco': preco, 'nomeP': nomeP}
             df_produto = df_produto.append(newrow, ignore_index=True)
-    return render_template('nova_venda.html', title='Cadastro venda', df_cliente=df_cliente, df_produto= df_produto)
+        return render_template('nova_venda.html', title='Cadastro venda', df_cliente=df_cliente, df_produto= df_produto)
 
 @app.route('/novo_produto', methods=['GET', 'POST'])
 def novo_produto():
     if request.method == 'POST':
         data = request.form.to_dict()
         produto = Produto(name=data['name'],
-                          preco=data['price'],
+                          preco=data['price'].replace(',','.'),
                           categoria=data['categoria'])
         db.session.add(produto)
         db.session.commit()
@@ -151,7 +165,7 @@ def novo_vendedor():
 
 @app.route('/api/data')
 def data():
-    return {'data': [user.to_dict() for user in User.query]}
+    return {'data': [vendas.to_dict() for vendas in Venda.query]}
 
 @app.route('/api/produto')
 def produto():
