@@ -50,8 +50,7 @@ def vendas():
 
 @app.route('/produtos')
 def produtos():
-    teste = ['oioioioioioioioi', '231321', '323']
-    return render_template('produtos.html', title='Cadastro venda', teste=teste)
+    return render_template('produtos.html', title='Cadastro venda')
 
 @app.route('/nova_venda')
 def nova_venda():
@@ -68,11 +67,9 @@ def nova_venda():
 def novo_produto():
     if request.method == 'POST':
         data = request.form.to_dict()
-
         produto = Produto(name=data['name'],
                           preco=data['price'],
                           categoria=data['categoria'])
-
         db.session.add(produto)
         db.session.commit()
     return render_template('novo_produto.html', title='Cadastro venda')
