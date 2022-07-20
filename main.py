@@ -1,5 +1,5 @@
 import pandas as pd
-from flask import Flask, render_template
+from flask import Flask, render_template,request
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -64,8 +64,17 @@ def nova_venda():
         df = df.append(newrow, ignore_index=True)
     return render_template('nova_venda.html', title='Cadastro venda', df=df)
 
-@app.route('/novo_produto')
+@app.route('/novo_produto', methods=['GET', 'POST'])
 def novo_produto():
+    if request.method == 'POST':
+        data = request.form.to_dict()
+
+        produto = Produto(name=data['name'],
+                          preco=data['price'],
+                          categoria=data['categoria'])
+
+        db.session.add(produto)
+        db.session.commit()
     return render_template('novo_produto.html', title='Cadastro venda')
 
 

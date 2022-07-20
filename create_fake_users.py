@@ -1,7 +1,7 @@
 import random
 import sys
 from faker import Faker
-from ajax_table import db, User, Produto
+from main import db, User, Produto
 
 
 def create_fake_users(n):
