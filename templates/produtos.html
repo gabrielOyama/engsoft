@@ -18,15 +18,6 @@
 
 {% block scripts %}
   <script>
-    $(document).ready(function () {
-      $('#produtos').DataTable({
-        ajax: '/api/produto',
-        columns: [
-          {data: 'name'},
-          {data: 'preco'},
-          {data: 'categoria'},
-        ],
-      });
-    });
+
   </script>
 {% endblock %}

@@ -6,26 +6,29 @@
     <div class="container py-5 h-100">
         <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
             <div class="card-body p-4 p-md-5">
-                <form>
-                    <h5 style="padding: 5px; font-size: 2rem">Nova venda</h5>
+                <form id="novaVenda" action="/nova_venda" method="POST" novalidate>
+                    <h5 style="padding: 5px; font-size: 1,5rem">Nova venda</h5>
                     <div class="form-row" style="padding: 5px;">
                         <div class="col-3">
                             <label class="form-label" for="Cliente">Cliente</label>
                             <br>
                             <select class="select form-control-lg" id='Cliente' style="font-size: 1rem; width: 25rem">
-                                {% for i, row in df.iterrows() %}
+                                {% for i, row in df_cliente.iterrows() %}
                                 <option value={{row['name']}}>{{row['name']}}</option>
                                 {% endfor %}
                             </select>
                         </div>
+                        <div class="col-10">
+
+                    </div>
                     </div>
                     <div class="form-row" style="padding: 5px;">
                         <div class="col-8">
-                            <label class="form-label" for="Vendedor">Vendedor</label>
+                            <label class="form-label" for="vendedor">Vendedor</label>
                             <br>
-                            <select class="select form-control-lg" name="Vendedor" id='Vendedor'
+                            <select  class="select form-control-lg" name="vendedor" id='vendedor'
                                 style="font-size: 1rem; width: 25rem">
-                                {% for i, row in df.iterrows() %}
+                                {% for i, row in df_produto.iterrows() %}
                                 <option value={{row['name']}}>{{row['name']}}</option>
                                 {% endfor %}
                             </select>
@@ -33,22 +36,22 @@
                     </div>
                     <div class="form-row" style="padding: 5px;">
                         <div class="col-3">
-                            <label class="form-label" for="name">Produtos</label>
+                            <label class="form-label" for="produto">Produtos</label>
                             <br>
-                            <select class="select form-control-lg" id='Produto' style="font-size: 1rem">
-                                {% for i, row in df.iterrows() %}
-                                <option value={{row['name']}}>{{row['name']}}</option>
+                            <select class="select form-control-lg" id='produto' style="font-size: 1rem">
+                                {% for i, row in df_produto.iterrows() %}
+                                <option value={{row['nomeP']}}>{{row['name']}}</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="col-6">
-                            <label class="form-label" for="name">Quantidade</label>
-                            <input type="text" id="name" class="form-control form-control-lg" />
+                            <label class="form-label" for="quantidade">Quantidade:</label>
+                            <input type="number" id="quantidade" class="form-control form-control-lg"  />
                         </div>
                     </div>
                     <div class="form-row" style="padding: 5px;">
                         <div class="col-9">
-                            <button onclick="addProduto()" style="
+                            <button type="button" onclick="addProduto()" style="
                         background-color: #4CAF50; /* Green */
                         border: none;
                         color: white;
@@ -62,21 +65,12 @@
                     </div>
                     <div class="form-row" style="padding: 5px;">
                         <div>
-                            <textarea rows="5" style="width: 25rem;"></textarea>
-                        </div>
-                    </div>
-                    <div class="form-row" style="padding: 5px;">
-                        <div class="col-3">
-                            <label class="form-label" for="name">Valor total</label>
-                            <br>
-                            <select class="select form-control-lg" id='Produto' style="font-size: 1rem">
-                                {% for i, row in df.iterrows() %}
-                                <option value={{row['name']}}>{{row['name']}}</option>
-                                {% endfor %}
-                            </select>
+                            <textarea rows="5" id="compras" style="width: 25rem;"></textarea>
                         </div>
                         <div style="margin: auto;">
-                            <input style="vertical-align: middle; font-size: 16px; height: 4em; width: 9rem " class="btn btn-primary btn-lg" type="submit"
+                            <label class="form-label" for="final">Valor final:</label>
+                            <input id="final" value="0" type="text">
+                            <input style="vertical-align: middle; font-size: 16px; height: 4em; width: 9rem" class="btn btn-primary btn-lg" type="submit"
                                 value="Salvar" />
                         </div>
                     </div>

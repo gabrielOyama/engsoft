@@ -69,9 +69,6 @@ db.create_all()
 
 
 @app.route('/')
-def index():
-    return render_template('ajax_table.html', title='Ajax Table')
-
 @app.route('/vendas')
 def vendas():
     return render_template('vendas.html', title='Lista de vendas')
@@ -84,20 +81,33 @@ def produtos():
 def clientes():
     return render_template('clientes.html', title='Lista de clientes')
 
+
 @app.route('/vendedores')
 def vendedores():
-    return render_template('vendedores.html', title='Lista de vendedores')
+    return render_template('vendedores.html', title='Cadastro venda')
 
-@app.route('/nova_venda')
+@app.route('/nova_venda', methods=['GET', 'POST'])
 def nova_venda():
-    df = pd.DataFrame(columns=['name', 'preco', 'categoria'])
-    for produto in Produto.query:
-        categoria = produto.categoria
-        name = produto.name
-        preco = produto.preco
-        newrow = {'categoria': categoria, 'name': name, 'preco': preco}
-        df = df.append(newrow, ignore_index=True)
-    return render_template('nova_venda.html', title='Cadastro venda', df=df)
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        print(data)
+    else:
+        df_cliente = pd.DataFrame(columns=['name'])
+        for cliente in Cliente.query:
+            name = cliente.name
+            newrow = {'name': name}
+            df_cliente = df_cliente.append(newrow, ignore_index=True)
+
+
+        df_produto = pd.DataFrame(columns=['name', 'preco', 'categoria', 'nomeP'])
+        for produto in Produto.query:
+            categoria = produto.categoria
+            name = produto.name
+            preco = produto.preco
+            nomeP = produto.name + '_' + str(produto.preco)
+            newrow = {'categoria': categoria, 'name': name, 'preco': preco, 'nomeP': nomeP}
+            df_produto = df_produto.append(newrow, ignore_index=True)
+    return render_template('nova_venda.html', title='Cadastro venda', df_cliente=df_cliente, df_produto= df_produto)
 
 @app.route('/novo_produto', methods=['GET', 'POST'])
 def novo_produto():
@@ -110,7 +120,7 @@ def novo_produto():
         db.session.commit()
     return render_template('novo_produto.html', title='Cadastro venda')
 
-@app.route('/novo_cliente', methods=['GET', 'POST'])
+@app.route('/cadastro_cliente', methods=['GET', 'POST'])
 def novo_cliente():
     # pdb.set_trace()
     if request.method == 'POST':
